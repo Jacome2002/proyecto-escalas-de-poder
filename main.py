@@ -56,3 +56,17 @@ def crear_personaje(personaje: PersonajeCreate):
     nuevo_personaje = {"id": nuevo_id, **personaje.model_dump()}
     db_personajes.append(nuevo_personaje)
     return {"status": "created", "data": nuevo_personaje}
+
+class SimulacionPeleaRequest(BaseModel):
+    personaje_atacante_id: int = Field(..., example=1, description="ID de Goku (1)")
+    multiplicador_atacante: float = Field(default=1.0, ge=1.0, example=8.0, description="Ejemplo: Kaio-ken x8")
+    personaje_defensor_id: int = Field(..., example=2, description="ID de Vegeta (2)")
+    multiplicador_defensor: float = Field(default=1.0, ge=1.0, example=1.0)
+
+class ResultadoPeleaResponse(BaseModel):
+    ganador_nombre: str
+    ki_efectivo_atacante: int
+    ki_efectivo_defensor: int
+    diferencia_ki: int
+    rastreador_explota: bool
+    mensaje_combate: str
