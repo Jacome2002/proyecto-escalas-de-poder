@@ -1,7 +1,30 @@
-from fastapi import FastAPI, HTTPException
+try:
+    from fastapi import FastAPI, HTTPException  # type: ignore[import-not-found]
+except ImportError:  # pragma: no cover - handled by the runtime environment
+    class FastAPI:  # type: ignore[no-redef]
+        def __init__(self, *args, **kwargs):
+            raise ImportError("FastAPI is required to run this application. Install it with 'pip install fastapi'.")
+
+    class HTTPException(Exception):  # type: ignore[no-redef]
+        pass
+
 from enum import Enum
-from pydantic import BaseModel, Field
-from typing import List, Optional
+import typing
+
+try:
+    from pydantic import BaseModel, Field  # type: ignore[import-not-found]
+except ImportError:  # pragma: no cover - handled by the runtime environment
+    class BaseModel:  # type: ignore[no-redef]
+        def __init__(self, *args, **kwargs):
+            raise ImportError("Pydantic is required to run this application. Install it with 'pip install pydantic'.")
+
+    class Field:  # type: ignore[no-redef]
+        def __init__(self, default=..., *args, **kwargs):
+            self.default = default
+            self.kwargs = kwargs
+
+        def __call__(self, *args, **kwargs):
+            return self.default
 
 app = FastAPI(
     title="Dragon Ball Z Ki Levels API",
