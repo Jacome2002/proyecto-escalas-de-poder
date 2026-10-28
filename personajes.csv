@@ -1,0 +1,5 @@
+id,nombre,raza,ki_base,saga_id,activo
+1,Goku,Saiyajin,416,1,True
+2,Vegeta,Saiyajin,18000,1,True
+3,Raditz,Saiyajin,1500,1,False
+4,Nappa,Saiyajin,4000,1,True
