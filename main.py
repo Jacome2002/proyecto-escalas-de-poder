@@ -44,3 +44,15 @@ class PersonajeCreate(BaseModel):
     raza: RazaEnum = Field(..., example=RazaEnum.SAIYAJIN)
     ki_base: int = Field(..., ge=0, example=416)
     saga_id: int = Field(..., example=1)
+
+
+db_personajes = []
+
+
+@app.post("/personajes", tags=["Personajes"])
+def crear_personaje(personaje: PersonajeCreate):
+    """Caso de uso: Registrar un nuevo personaje."""
+    nuevo_id = len(db_personajes) + 1
+    nuevo_personaje = {"id": nuevo_id, **personaje.model_dump()}
+    db_personajes.append(nuevo_personaje)
+    return {"status": "created", "data": nuevo_personaje}
