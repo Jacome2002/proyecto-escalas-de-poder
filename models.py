@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field
 
+# Enumeraciones
 class RazaEnum(str, Enum):
     SAIYAJIN = "Saiyajin"
     NAMEKIANO = "Namekiano"
@@ -9,16 +10,47 @@ class RazaEnum(str, Enum):
     ANDROIDE = "Androide"
     RAZA_FREEZER = "Raza de Freezer"
 
-class Saga(BaseModel):
-    id: int
-    nombre: str
-    orden_cronologico: int
+# ==========================================
+# MODELO 1: SAGA
+# ==========================================
+class SagaBase(BaseModel):
+    nombre: str = Field(..., example="Saga Saiyajin")
+    orden_cronologico: int = Field(..., ge=1, example=1)
+    activo: bool = Field(default=True, description="Borrado lógico / Histórico")
 
-class Transformacion(BaseModel):
-    id: int
-    nombre: str
-    multiplicador_ki: float
+class SagaCreate(SagaBase):
+    pass
 
+class SagaUpdate(BaseModel):
+    nombre: Optional[str] = None
+    orden_cronologico: Optional[int] = None
+    activo: Optional[bool] = None
+
+class SagaResponse(SagaBase):
+    id: int
+
+# ==========================================
+# MODELO 2: TRANSFORMACIÓN
+# ==========================================
+class TransformacionBase(BaseModel):
+    nombre: str = Field(..., example="Kaio-ken x4")
+    multiplicador_ki: float = Field(..., ge=1.0, example=4.0)
+    activo: bool = Field(default=True, description="Borrado lógico / Histórico")
+
+class TransformacionCreate(TransformacionBase):
+    pass
+
+class TransformacionUpdate(BaseModel):
+    nombre: Optional[str] = None
+    multiplicador_ki: Optional[float] = None
+    activo: Optional[bool] = None
+
+class TransformacionResponse(TransformacionBase):
+    id: int
+
+# ==========================================
+# MODELO 3: PERSONAJE
+# ==========================================
 class PersonajeBase(BaseModel):
     nombre: str = Field(..., example="Goku")
     raza: RazaEnum = Field(..., example=RazaEnum.SAIYAJIN)
@@ -39,6 +71,9 @@ class PersonajeUpdate(BaseModel):
 class PersonajeResponse(PersonajeBase):
     id: int
 
+# ==========================================
+# DTO PARA SIMULACIÓN DE COMBATE
+# ==========================================
 class SimulacionPeleaRequest(BaseModel):
     personaje_atacante_id: int = Field(..., example=1)
     multiplicador_atacante: float = Field(default=1.0, ge=1.0, example=8.0)
