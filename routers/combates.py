@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from models import SimulacionPeleaRequest, ResultadoPeleaResponse
-from database import leer_csv
+from database import leer_personajes
 
 router = APIRouter(
     prefix="/simular-pelea",
@@ -9,7 +9,7 @@ router = APIRouter(
 
 @router.post("", response_model=ResultadoPeleaResponse)
 def simular_pelea(solicitud: SimulacionPeleaRequest):
-    personajes = leer_csv()
+    personajes = leer_personajes()
     atacante = next((p for p in personajes if p["id"] == solicitud.personaje_atacante_id and p["activo"]), None)
     if not atacante:
         raise HTTPException(status_code=404, detail="El personaje atacante no existe o está inactivo.")
