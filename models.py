@@ -72,15 +72,27 @@ class PersonajeResponse(PersonajeBase):
     id: int
 
 # ==========================================
-# DTO PARA SIMULACIÓN DE COMBATE
+# MODELO 4: COMBATE 
 # ==========================================
-class SimulacionPeleaRequest(BaseModel):
+class CombateBase(BaseModel):
     personaje_atacante_id: int = Field(..., example=1)
-    multiplicador_atacante: float = Field(default=1.0, ge=1.0, example=8.0)
+    multiplicador_atacante: float = Field(default=1.0, ge=1.0, example=60.0)
     personaje_defensor_id: int = Field(..., example=2)
     multiplicador_defensor: float = Field(default=1.0, ge=1.0, example=1.0)
+    activo: bool = Field(default=True, description="Borrado lógico / Histórico")
 
-class ResultadoPeleaResponse(BaseModel):
+class CombateCreate(CombateBase):
+    pass
+
+class CombateUpdate(BaseModel):
+    personaje_atacante_id: Optional[int] = None
+    multiplicador_atacante: Optional[float] = None
+    personaje_defensor_id: Optional[int] = None
+    multiplicador_defensor: Optional[float] = None
+    activo: Optional[bool] = None
+
+class CombateResponse(CombateBase):
+    id: int
     ganador_nombre: str
     ki_efectivo_atacante: int
     ki_efectivo_defensor: int
