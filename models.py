@@ -72,7 +72,7 @@ class PersonajeResponse(PersonajeBase):
     id: int
 
 # ==========================================
-# MODELO 4: COMBATE 
+# MODELO 4: COMBATE (CON CRUD COMPLETO)
 # ==========================================
 class CombateBase(BaseModel):
     personaje_atacante_id: int = Field(..., example=1)

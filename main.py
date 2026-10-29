@@ -1,22 +1,22 @@
-from routers import sagas, personajes, combates
 from fastapi import FastAPI
 from database import inicializar_csv
-import routers
+from routers import sagas, transformaciones, personajes, combates
 
 app = FastAPI(
     title="Dragon Ball Z Ki API - CRUD CSV Completo",
-    description="API RESTful con CRUDs completos para 3 modelos (Sagas, Transformaciones, Personajes) con persistencia en CSV y borrado lógico",
-    version="3.0.0"
+    description="API RESTful con CRUDs completos para 4 modelos (Sagas, Transformaciones, Personajes, Combates) con persistencia en CSV y borrado lógico",
+    version="4.0.0"
 )
 
-# Inicializar almacenamiento CSV
+# Inicializar archivos CSV
 inicializar_csv()
 
-# Registrar los 3 modelos CRUD + Lógica de Combate
+# Registrar los 4 routers CRUD
 app.include_router(sagas.router)
+app.include_router(transformaciones.router)
 app.include_router(personajes.router)
 app.include_router(combates.router)
 
 @app.get("/", tags=["Root"])
 def root():
-    return {"message": "API de Dragon Ball Z activa con CRUDs en 3 modelos. Revisa /docs"}
+    return {"message": "API de Dragon Ball Z activa con CRUDs completos en 4 modelos. Revisa la documentación en /docs"}
