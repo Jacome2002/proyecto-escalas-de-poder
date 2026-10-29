@@ -1,6 +1,7 @@
+from routers import sagas, personajes, combates
 from fastapi import FastAPI
 from database import inicializar_csv
-from routers import sagas, transformaciones, personajes, combates
+import routers
 
 app = FastAPI(
     title="Dragon Ball Z Ki API - CRUD CSV Completo",
@@ -13,7 +14,6 @@ inicializar_csv()
 
 # Registrar los 3 modelos CRUD + Lógica de Combate
 app.include_router(sagas.router)
-app.include_router(transformaciones.router)
 app.include_router(personajes.router)
 app.include_router(combates.router)
 
