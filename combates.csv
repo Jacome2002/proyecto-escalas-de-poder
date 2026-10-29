@@ -1,0 +1,2 @@
+id,personaje_atacante_id,multiplicador_atacante,personaje_defensor_id,multiplicador_defensor,ganador_nombre,ki_efectivo_atacante,ki_efectivo_defensor,diferencia_ki,rastreador_explota,mensaje_combate,activo
+1,1,60.0,2,1.0,Goku,24960,18000,6960,True,"¡Goku gana el combate con una ventaja de 6,960 unidades de Ki! 💥 ¡PÍIII... BUM! El rastreador ha explotado por sobrecarga de Ki.",True

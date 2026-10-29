@@ -5,9 +5,10 @@ from typing import List, Dict
 CSV_SAGAS = "sagas.csv"
 CSV_TRANSFORMACIONES = "transformaciones.csv"
 CSV_PERSONAJES = "personajes.csv"
+CSV_COMBATES = "combates.csv"
 
 def inicializar_csv():
-    """Crea los 3 archivos CSV iniciales con datos semilla si no existen."""
+    """Crea los 4 archivos CSV iniciales con datos semilla si no existen."""
     if not os.path.exists(CSV_SAGAS):
         with open(CSV_SAGAS, mode="w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
@@ -32,6 +33,22 @@ def inicializar_csv():
             w.writerow([2, "Vegeta", "Saiyajin", 18000, 1, True])
             w.writerow([3, "Raditz", "Saiyajin", 1500, 1, False])
             w.writerow([4, "Nappa", "Saiyajin", 4000, 1, True])
+
+    if not os.path.exists(CSV_COMBATES):
+        with open(CSV_COMBATES, mode="w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow([
+                "id", "personaje_atacante_id", "multiplicador_atacante",
+                "personaje_defensor_id", "multiplicador_defensor",
+                "ganador_nombre", "ki_efectivo_atacante", "ki_efectivo_defensor",
+                "diferencia_ki", "rastreador_explota", "mensaje_combate", "activo"
+            ])
+            w.writerow([
+                1, 1, 60.0, 2, 1.0,
+                "Goku", 24960, 18000, 6960, True,
+                "¡Goku gana el combate con una ventaja de 6,960 unidades de Ki! 💥 ¡PÍIII... BUM! El rastreador ha explotado por sobrecarga de Ki.",
+                True
+            ])
 
 # --- SAGAS ---
 def leer_sagas() -> List[Dict]:
@@ -100,3 +117,43 @@ def escribir_personajes(personajes: List[Dict]):
         w.writerow(["id", "nombre", "raza", "ki_base", "saga_id", "activo"])
         for p in personajes:
             w.writerow([p["id"], p["nombre"], p["raza"], p["ki_base"], p["saga_id"], p["activo"]])
+
+# --- COMBATES ---
+def leer_combates() -> List[Dict]:
+    inicializar_csv()
+    combates = []
+    with open(CSV_COMBATES, mode="r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            combates.append({
+                "id": int(row["id"]),
+                "personaje_atacante_id": int(row["personaje_atacante_id"]),
+                "multiplicador_atacante": float(row["multiplicador_atacante"]),
+                "personaje_defensor_id": int(row["personaje_defensor_id"]),
+                "multiplicador_defensor": float(row["multiplicador_defensor"]),
+                "ganador_nombre": row["ganador_nombre"],
+                "ki_efectivo_atacante": int(row["ki_efectivo_atacante"]),
+                "ki_efectivo_defensor": int(row["ki_efectivo_defensor"]),
+                "diferencia_ki": int(row["diferencia_ki"]),
+                "rastreador_explota": row["rastreador_explota"].lower() in ("true", "1", "t"),
+                "mensaje_combate": row["mensaje_combate"],
+                "activo": row["activo"].lower() in ("true", "1", "t")
+            })
+    return combates
+
+def escribir_combates(combates: List[Dict]):
+    with open(CSV_COMBATES, mode="w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow([
+            "id", "personaje_atacante_id", "multiplicador_atacante",
+            "personaje_defensor_id", "multiplicador_defensor",
+            "ganador_nombre", "ki_efectivo_atacante", "ki_efectivo_defensor",
+            "diferencia_ki", "rastreador_explota", "mensaje_combate", "activo"
+        ])
+        for c in combates:
+            w.writerow([
+                c["id"], c["personaje_atacante_id"], c["multiplicador_atacante"],
+                c["personaje_defensor_id"], c["multiplicador_defensor"],
+                c["ganador_nombre"], c["ki_efectivo_atacante"], c["ki_efectivo_defensor"],
+                c["diferencia_ki"], c["rastreador_explota"], c["mensaje_combate"], c["activo"]
+            ])
