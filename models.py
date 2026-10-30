@@ -72,7 +72,7 @@ class PersonajeResponse(PersonajeBase):
     id: int
 
 # ==========================================
-# MODELO 4: COMBATE (CON CRUD COMPLETO)
+# MODELO 4: COMBATE 
 # ==========================================
 class CombateBase(BaseModel):
     personaje_atacante_id: int = Field(..., example=1)
@@ -85,10 +85,10 @@ class CombateCreate(CombateBase):
     pass
 
 class CombateUpdate(BaseModel):
-    personaje_atacante_id: Optional[int] = None
-    multiplicador_atacante: Optional[float] = None
-    personaje_defensor_id: Optional[int] = None
-    multiplicador_defensor: Optional[float] = None
+    personaje_atacante_id: Optional[int] = Field(None, example=1)
+    multiplicador_atacante: Optional[float] = Field(None, ge=1.0, example=60.0)
+    personaje_defensor_id: Optional[int] = Field(None, example=2)
+    multiplicador_defensor: Optional[float] = Field(None, ge=1.0, example=1.0)
     activo: Optional[bool] = None
 
 class CombateResponse(CombateBase):
